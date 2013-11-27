@@ -1,0 +1,56 @@
+python script with sys-args set with aliases
+
+--scripts--
+tasks.py
+tasks.db
+taskpusher.py
+
+
+--methods--
+day_tasks(day='today')
+    -use sql to pull all from date specified
+format(date)
+    -format today and tomorrow to dates for sql queries
+add(day, *args)
+    -add one or more tasks to day specified
+remove(*args)
+    -append *Done* to  one or more tasks by task number
+undo(*args)
+    -remove *Done* from tasks
+
+--SQL queries--
+**EXAMPLE SQL DATA**
+ID    Task                           Date
+124   'Do Dishes'                    10-12
+143   '*Done* Call friend *Done*'    10-12
+
+pull_by_date(date)
+    from tasks.db 
+    select Task/ID 
+    where Date = date
+
+pull_by_num(number)
+    from tasks.db
+    select Task
+    where ID = number
+
+change_by_num(number, update)
+    from tasks.db
+    select Task
+    where ID = number
+        change Task to update
+
+new_db_entry(name,date)
+    new DB entry with name = Task
+    new ID number assigned
+
+--Command Line Arguments & Aliases--
+t.tasks $day -> 
+    tasks.day_tasks(day)
+t.done $nums* -> 
+    tasks.remove($$$)
+t.undo $nums* ->
+    tasks.undo($nums*)
+t.add $day $name* ->
+    tasks.add($day,$name*)
+
