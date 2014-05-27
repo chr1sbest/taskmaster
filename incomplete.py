@@ -9,13 +9,22 @@ cursor = db.cursor()
 #-----Check for Incompletes-----#
 
 def incomplete():
-    incompletes = cursor.execute("SELECT id, task, date FROM tasktable WHERE done=0 ORDER BY date DESC") 
+    incompletes = cursor.execute(
+        """
+        SELECT id, task, date 
+        FROM tasktable 
+        WHERE done=0 
+        ORDER BY date DESC
+        """
+    ) 
     print
-    print 'Incomplete Tasks:'
+    print 'All Tasks:'
+    yesterday = datetime.datetime.now() - datetime.timedelta(hours=24)
     for entry in incompletes:
-        date = datetime.datetime.strptime(entry[2],"%m-%d-%Y")
-        if date < datetime.datetime.now() - datetime.timedelta(hours=24):
-            print '  [ ] {:<20} {}  ({:>1})'.format(str(entry[1]),entry[2][:5],entry[0],)
+        name = str(entry[1])
+        date = entry[2][:5]
+        number = entry[0]
+        print '  [ ] {:<20} {}  ({:>1})'.format(name, date, number)
 
 if __name__ == "__main__":
     incomplete()
